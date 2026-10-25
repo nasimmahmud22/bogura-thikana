@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>বগুড়া ঠিকানা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6f3;--card:#fff;--ink:#17231d;--mute:#5b6b62;--line:#d5e0d9;--acc:#0d6b4b;--acc-ink:#fff;--hi:#e2f1e9;--red:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--card:#17221c;--ink:#e5efe9;--mute:#9db1a6;--line:#2a3b32;--acc:#58c595;--acc-ink:#06241a;--hi:#183327;--red:#ee7b6e}}
+:root[data-theme="dark"]{--bg:#0f1713;--card:#17221c;--ink:#e5efe9;--mute:#9db1a6;--line:#2a3b32;--acc:#58c595;--acc-ink:#06241a;--hi:#183327;--red:#ee7b6e}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali","Kalpurush",system-ui,sans-serif;line-height:1.6}
+main{max-width:600px;margin:0 auto;padding:16px 16px 56px}
+h1{font-size:1.55rem;margin:6px 0 2px}
+.sub{margin:0 0 14px;color:var(--mute)}
+input,select{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+#q{font-size:1.1rem;border:2px solid var(--acc)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 0 6px;scrollbar-width:thin}
+.chips button{flex:none;font:inherit;padding:6px 13px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.bar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:6px 0 10px;color:var(--mute)}
+button.b{font:inherit;font-weight:600;border:0;border-radius:8px;padding:9px 14px;background:var(--acc);color:var(--acc-ink);cursor:pointer}
+button.alt{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.p{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px}
+.p h3{margin:0;font-size:1.05rem}
+.meta{color:var(--mute);font-size:.92rem}
+.dist{float:right;font-weight:600;color:var(--acc);margin-left:8px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0}
+.tags span{font-size:.82rem;background:var(--hi);padding:1px 9px;border-radius:10px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.acts a,.acts button{font:inherit;font-size:.92rem;padding:6px 12px;border-radius:8px;border:1px solid var(--acc);color:var(--acc);text-decoration:none;background:transparent;cursor:pointer}
+.acts .del{border-color:var(--red);color:var(--red)}
+.empty{text-align:center;color:var(--mute);padding:26px 8px}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:18px}
+summary{font-weight:600;cursor:pointer}
+label{display:block;font-weight:500;margin:10px 0 3px}
+.note{font-size:.88rem;color:var(--mute);margin:8px 0 0}
+#msg{color:var(--red);margin:6px 0 0}
+</style>
+</head>
+<body>
+<main>
+<h1>বগুড়া ঠিকানা</h1>
+<p class="sub">জিনিস, দোকান বা জায়গার নাম লিখুন। কোথায় পাবেন, কত দূরে, সব দেখুন।</p>
+<input id="q" type="search" placeholder="যেমন: ঔষধ, মোবাইল, বাস, কলেজ, পিৎজা" aria-label="খুঁজুন">
+<div class="chips" id="chips"></div>
+<div class="bar"><span id="cnt"></span><button class="b alt" id="loc">আমার কাছেরগুলো আগে দেখান</button></div>
+<div id="msg" role="alert"></div>
+<div id="res"></div>
+
+<details id="addbox">
+<summary>নতুন দোকান বা জায়গার তথ্য পাঠান</summary>
+<p class="note" style="margin-top:8px">আপনার পাঠানো তথ্য অ্যাডমিন যাচাই করবেন। যাচাইয়ের পরই সেটা সবার কাছে দেখা যাবে।</p>
+<label for="an">নাম</label><input id="an" maxlength="60">
+<label for="ac">ধরন</label><select id="ac"></select>
+<label for="ap">কী কী পাওয়া যায় (কমা দিয়ে লিখুন)</label><input id="ap" placeholder="যেমন: চাল, ডাল, তেল">
+<label for="aa">ঠিকানা</label><input id="aa" maxlength="120" placeholder="এলাকা, রাস্তা, কাছের চেনা জায়গা">
+<label for="aph">ফোন (না থাকলে ফাঁকা রাখুন)</label><input id="aph" type="tel">
+<label for="ag">অবস্থান (অক্ষাংশ, দ্রাঘিমাংশ)</label><input id="ag" placeholder="24.8465, 89.3773">
+<div class="acts"><button id="gps" type="button">আমি এখন দোকানের কাছে আছি, অবস্থান বসান</button></div>
+<p class="note">গুগল ম্যাপে জায়গা চেপে ধরলে যে সংখ্যা দেখায়, সেটাও বসানো যায়।</p>
+<button class="b" id="save" style="margin-top:10px;width:100%">যাচাই করে তথ্য তৈরি করুন</button>
+<p id="aerr" role="alert" style="color:var(--red);margin:6px 0 0"></p>
+<div id="aout"></div>
+</details>
+</main>
+
+<script>
+var CAT={st:"স্টেশন",hos:"হাসপাতাল",pha:"ফার্মেসি",col:"কলেজ",sch:"স্কুল",mkt:"বাজার ও মল",mob:"মোবাইল ও গ্যাজেট",res:"খাবার",gov:"সরকারি অফিস",oth:"অন্যান্য"};
+/* [নাম, English, ধরন, lat, lng, ঠিকানা, ফোন, কীওয়ার্ড] */
+var D=[
+["চারমাথা বাস টার্মিনাল","Charmatha Bus Terminal","st",24.8579,89.3503,"সান্তাহার রোড, চারমাথা","","বাস নওগাঁ জয়পুরহাট দিনাজপুর পঞ্চগড় রংপুর কুড়িগ্রাম গাইবান্ধা ঢাকা টিকিট"],
+["বিআরটিসি বাস ডিপো","BRTC Bus Depo","st",24.8493,89.3717,"কলেজ রোড, সাতমাথার কাছে","01746-684464","বাস এসি নন-এসি টিকিট মসজিদ"],
+["ঠনঠনিয়া বাস স্ট্যান্ড","Thanthania Bus Stand","st",24.8329,89.3765,"শেরপুর রোড","","বাস ঢাকা চট্টগ্রাম সিলেট কাউন্টার টিকিট"],
+["বগুড়া রেলওয়ে স্টেশন","Bogura Railway Station","st",24.8485,89.3667,"কলেজ রোড","01772-979796","ট্রেন টিকিট ঢাকা রংপুর লালমনিরহাট"],
+["২৫০ শয্যা মোহাম্মদ আলী হাসপাতাল","250 bedded Mohammad Ali Hospital","hos",24.8356,89.3742,"শেরপুর রোড","01730-324803","সরকারি হাসপাতাল জরুরি ২৪ ঘণ্টা"],
+["হেলথ সিটি বগুড়া","Health City Bogura","hos",24.8260,89.3781,"শেরপুর রোড","01790-181818","বেসরকারি হাসপাতাল ২৪ ঘণ্টা"],
+["সাইক জেনারেল হাসপাতাল","Saic General Hospital","hos",24.8314,89.3767,"ভাই পাগলা মাজার লেন","01988-606114","বেসরকারি হাসপাতাল ডাক্তার চেম্বার"],
+["গুড হেলথ স্পেশালাইজড হাসপাতাল","Good Health Specialized Hospital","hos",24.8333,89.3752,"সুফি লেন, ঠনঠনিয়া","01906-398080","বেসরকারি হাসপাতাল ল্যাব পরীক্ষা"],
+["ইন্ডিপেন্ডেন্ট জেনারেল হাসপাতাল","Independent General Hospital","hos",24.8395,89.3735,"পিটিআইয়ের উত্তর-পূর্ব পাশে, এস চ্যাটার্জী লেন","01951-393221","বেসরকারি হাসপাতাল চেকআপ"],
+["মেডিকো প্লাস ফার্মেসি","Medico Plus Pharmacy","pha",24.8540,89.3842,"জিরো পয়েন্ট, শফি ক্লিনিকের কাছে","01730-020064","ঔষধ হোম ডেলিভারি ২৪ ঘণ্টা"],
+["পৌষী ফার্মেসি অ্যান্ড সার্জিক্যাল মেডিসিন স্টোর","Poushi Pharmacy","pha",24.8279,89.3529,"শহীদ জিয়াউর রহমান মেডিকেল কলেজ, বাইপাস","01711-031432","ঔষধ সার্জিক্যাল ২৪ ঘণ্টা"],
+["দ্য রয়্যাল ফার্মেসি","The Royal Pharmacy","pha",24.8284,89.3545,"সিটি বাইপাস","","ঔষধ ২৪ ঘণ্টা"],
+["মেসার্স পাঁচ ভাই স্টোর","Pachan Bhai Store","pha",24.8274,89.3555,"রুমা মানিলা কমপ্লেক্স, মেডিকেল কলেজের সামনে","01722-640410","ঔষধ ২৪ ঘণ্টা"],
+["ফার্মেসি (কাজী নজরুল ইসলাম রোড)","Pharmacy","pha",24.8511,89.3731,"কাজী নজরুল ইসলাম রোড","01739-515001","ঔষধ"],
+["বগুড়া কলেজ","Bogura College","col",24.8560,89.3925,"ধাওয়া, বসুন্ধরা রোড নং ১","",""],
+["এসওএস হারম্যান মেইনার কলেজ","SOS Hermann Gmeiner College","col",24.8857,89.3561,"বগুড়া সিটি বাইপাস","01309-132281","এইচএসসি"],
+["বগুড়া সিটি কলেজ","Bogura City College","col",24.8437,89.3754,"বগুড়া শহর","",""],
+["বগুড়া সরকারি কলেজ","Bogura Government College","col",24.8472,89.3724,"সাতমাথার কাছে, শেরপুর রোড","","এইচএসসি সরকারি"],
+["নেটপ্রো মডেল স্কুল অ্যান্ড কলেজ","Netpro Model School & College","sch",24.8426,89.3774,"রেজাউল বাকী রোড","01324-726900","এসএসসি এইচএসসি"],
+["বগুড়া স্ট্যান্ডার্ড স্কুল","Bogura Standard School","sch",24.8458,89.3762,"রোমেনা আফাজ রোড","01774-264367",""],
+["বগুড়া মাল্টিলিংগুয়াল স্কুল","Bogura Multilingual School","sch",24.8457,89.3684,"১ আব্দুল বারী রোড","01611-001685",""],
+["ইন্টারন্যাশনাল হোপ স্কুল, বগুড়া শাখা","International Hope School","sch",24.8432,89.3664,"বগুড়া শহর","01781-172230","ইংলিশ মিডিয়াম"],
+["ইন্টারন্যাশনাল এবল-ডিল স্কুল","International Able-Deal School","sch",24.8432,89.3664,"ঢাকা-রংপুর মহাসড়ক","01781-172230","প্রি-স্কুল ইংলিশ মিডিয়াম"],
+["বাইট ইন্টারন্যাশনাল স্কুল অ্যান্ড কলেজ","BYTE International School & College","sch",24.8637,89.3718,"কলেজ রোড, সুবিল","01718-241445",""],
+["এবি ইলেকট্রনিক্স (ভিভো ব্র্যান্ড শপ)","AB Electronics Vivo","mob",24.8484,89.3719,"বিআরটিসি মার্কেট, দোকান ৬, কলেজ রোড","01727-400020","মোবাইল ফোন ভিভো স্মার্টফোন"],
+["এসপি স্মার্ট মোবাইল জোন","SP Smart Mobile Zone","mob",24.8484,89.3717,"বিআরটিসি শপিং কমপ্লেক্স, দোকান ৯","01714-801611","মোবাইল ফোন এক্সেসরিজ সব ব্র্যান্ড"],
+["মোবাইল গ্যাজেট বগুড়া","Mobile Gadget Bogura","mob",24.8481,89.3759,"রানার প্লাজা ৫ম তলা, নবাববাড়ী রোড","01619-134642","মোবাইল ফোন গ্যাজেট"],
+["মাইক্রোটাচ গ্যাজেট অ্যান্ড মোবাইল","Microtouch Gadget & Mobile","mob",24.8480,89.3757,"রানার প্লাজা ৫ম তলা, দোকান ৬","01922-808098","স্মার্টফোন গ্যাজেট"],
+["এম.আর টেলিকম","M.R Telecom","mob",24.8492,89.3761,"নবাববাড়ী রোড","01713-662122","মোবাইল ফোন এক্সেসরিজ সব ব্র্যান্ড"],
+["পুলিশ প্লাজা","Police Plaza","mkt",24.8484,89.3752,"নবাববাড়ী রোড, সাতমাথার কাছে","01321-142180","শপিং মল সুপার শপ মুদি পোশাক মোবাইল ক্যাফে"],
+["নিউ মার্কেট","New Market","mkt",24.8497,89.3731,"কাজী নজরুল ইসলাম রোড, সদর থানার কাছে","01738-765040","কাপড় জামা জুয়েলারি গয়না প্রসাধনী কসমেটিকস ইলেকট্রনিক্স মিষ্টি বেকারি ফাস্টফুড বিরিয়ানি"],
+["রানার প্লাজা","Runner Plaza","mkt",24.8481,89.3759,"নবাববাড়ী রোড, সাতমাথার কাছে","","শপিং মল কাপড় আসবাব ফার্নিচার ফোন ল্যাপটপ ক্যামেরা জুতা কম্বল সুপার শপ রেস্টুরেন্ট এটিএম"],
+["শেখ শরিফ উদ্দিন সুপার মার্কেট","Sheikh Sharif Uddin Supermarket","mkt",24.8486,89.3757,"নবাববাড়ী রোড","01728-165467","কম্পিউটার ল্যাপটপ মোবাইল ইলেকট্রনিক্স কাপড় সুপার শপ"],
+["আলতাফ আলী মার্কেট","Altaf Ali Market","mkt",24.8487,89.3758,"নবাববাড়ী রোড","01715-359260","কম্পিউটার এক্সেসরিজ ল্যাপটপ সিসিটিভি ক্যামেরা কাপড়"],
+["হার্লি’স","Harley's","res",24.8453,89.3759,"এনকে টাওয়ার ২য় তলা","01339-424220","পিৎজা রামেন ডাম্পলিং রেস্টুরেন্ট"],
+["হিলিয়াম","Helium","res",24.8454,89.3759,"এনকে টাওয়ার ৪র্থ তলা","09639-203131","বার্গার মিটবক্স শেক রেস্টুরেন্ট"],
+["দ্য রোস্টেড বিন","The Roasted Bean","res",24.8446,89.3764,"এ.আর টাওয়ার ৩য় তলা, শহীদ আব্দুল জব্বার সড়ক","01795-597951","কফি ল্যাটে পাস্তা ক্যাফে"],
+["গুড ফুড ক্যাফে অ্যান্ড রেস্টুরেন্ট","Good Food Cafe","res",24.8646,89.3721,"কলেজ রোড","01728-247645","ভাত ক্যাফে রেস্টুরেন্ট"],
+["ক্যাজুয়ারিনা (হোটেল নাজ গার্ডেন)","Casuarina Hotel Naz Garden","res",24.8272,89.3573,"মেডিকেল কলেজের কাছে, বাইপাস","01755-510119","রেস্টুরেন্ট পিৎজা হোটেল ২৪ ঘণ্টা"],
+["জেলা প্রশাসকের কার্যালয় (ডিসি অফিস)","Deputy Commissioner's Office","gov",24.8469,89.3776,"শহীদ খোকন লেন, করতোয়া নদীর পাশে","051-69110","সরকারি অফিস বিআরটিএ ড্রাইভিং লাইসেন্স ডিসি"]
+];
+var SYN={"ওষুধ":"ঔষধ","medicine":"ঔষধ","মেডিসিন":"ঔষধ","ফোন":"মোবাইল","phone":"মোবাইল","mobile":"মোবাইল","bus":"বাস","train":"ট্রেন","hospital":"হাসপাতাল","doctor":"ডাক্তার","school":"স্কুল","college":"কলেজ","pharmacy":"ফার্মেসি","food":"খাবার","restaurant":"রেস্টুরেন্ট","pizza":"পিৎজা","laptop":"ল্যাপটপ","computer":"কম্পিউটার","clothes":"কাপড়","market":"মার্কেট","মেডিকেল":"ফার্মেসি"};
+var KEY="bogura-thikana-v1",U=[];
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(U))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+var bn=function(n,d){return Number(n).toLocaleString("bn-BD",{maximumFractionDigits:d||0})};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var cat="all",me=null;
+
+function all(){
+var a=D.map(function(x,i){return {n:x[0],e:x[1],c:x[2],la:x[3],lo:x[4],ad:x[5],ph:x[6],kw:x[7],u:false}});
+U.forEach(function(x,i){a.push({n:x.n,e:"",c:x.c,la:x.la,lo:x.lo,ad:x.ad,ph:x.ph,kw:x.kw,u:true,i:i})});
+return a;
+}
+function km(a,b,c,d){var R=6371,t=Math.PI/180,x=(c-a)*t,y=(d-b)*t,h=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*t)*Math.cos(c*t)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(h))}
+function dtxt(k){return k<1?bn(Math.round(k*10)*100)+" মি.":bn(k,1)+" কিমি"}
+
+function chips(){
+var h='<button data-c="all" aria-pressed="'+(cat==="all")+'">সব</button>';
+Object.keys(CAT).forEach(function(k){h+='<button data-c="'+k+'" aria-pressed="'+(cat===k)+'">'+CAT[k]+'</button>'});
+$("chips").innerHTML=h;
+$("chips").querySelectorAll("button").forEach(function(b){b.onclick=function(){cat=b.dataset.c;chips();render()}});
+}
+function render(){
+var q=$("q").value.trim().toLowerCase(),toks=q?q.split(/\s+/):[];
+var L=all().filter(function(p){
+if(cat!=="all"&&p.c!==cat)return false;
+var hay=(p.n+" "+p.e+" "+CAT[p.c]+" "+p.kw+" "+p.ad).toLowerCase();
+return toks.every(function(t){return hay.indexOf(t)>=0||(SYN[t]&&hay.indexOf(SYN[t])>=0)});
+});
+L.forEach(function(p){p.d=me?km(me.la,me.lo,p.la,p.lo):null});
+if(me)L.sort(function(a,b){return a.d-b.d});
+$("cnt").textContent=bn(L.length)+"টি ফলাফল"+(me?" · কাছেরগুলো আগে":"");
+if(!L.length){$("res").innerHTML='<div class="empty">কিছু পাওয়া যায়নি। অন্য শব্দে খুঁজুন, বা নিচের ফর্মে এই দোকান বা জায়গা নিজে যোগ করুন।</div>';return}
+$("res").innerHTML=L.map(function(p){
+var tags=p.kw?p.kw.split(/[\s,]+/).slice(0,6).filter(Boolean).map(function(t){return "<span>"+esc(t)+"</span>"}).join(""):"";
+var ll=p.la+","+p.lo;
+return '<div class="p">'+(p.d!=null?'<span class="dist">'+dtxt(p.d)+'</span>':"")+'<h3>'+esc(p.n)+'</h3><div class="meta">'+CAT[p.c]+(p.u?" · আপনার যোগ করা":"")+'</div>'+(p.ad?'<div class="meta">'+esc(p.ad)+'</div>':"")+(tags?'<div class="tags">'+tags+'</div>':"")+
+'<div class="acts"><a href="https://www.google.com/maps/search/?api=1&query='+ll+'" target="_blank" rel="noopener">ম্যাপে দেখুন</a><a href="https://www.google.com/maps/dir/?api=1&destination='+ll+'" target="_blank" rel="noopener">রাস্তা দেখুন</a>'+(p.ph?'<a href="tel:'+esc(p.ph.replace(/[^+\d]/g,""))+'">'+esc(p.ph)+'</a>':"")+(p.u?'<button class="del" data-i="'+p.i+'">মুছুন</button>':"")+'</div></div>';
+}).join("");
+$("res").querySelectorAll(".del").forEach(function(b){b.onclick=function(){U.splice(+b.dataset.i,1);save();render()}});
+}
+$("q").oninput=render;
+function getPos(ok,fail){
+if(!navigator.geolocation){fail();return}
+navigator.geolocation.getCurrentPosition(function(p){ok(p.coords.latitude,p.coords.longitude)},fail,{timeout:10000});
+}
+$("loc").onclick=function(){
+$("msg").textContent="";
+getPos(function(a,b){me={la:a,lo:b};$("loc").textContent="আপনার অবস্থান ধরা হয়েছে";render()},
+function(){$("msg").textContent="আপনার অবস্থান পাওয়া যায়নি। ফোনের লোকেশন চালু আছে কি না এবং ব্রাউজারকে অনুমতি দিয়েছেন কি না দেখুন।"});
+};
+$("ac").innerHTML=Object.keys(CAT).map(function(k){return '<option value="'+k+'">'+CAT[k]+"</option>"}).join("");
+/* অ্যাডমিনের হোয়াটসঅ্যাপ নম্বর এখানে বসান, যেমন "8801712345678" */
+var ADMIN_WA="";
+var BOX={a:24.5,b:25.2,c:88.9,d:89.7};
+var BAD=["casino","betting","porn","sex","xxx","loan","ক্যাসিনো","বেটিং","জুয়া","পর্ন"];
+function dig(s){return s.replace(/[০-৯]/g,function(c){return "০১২৩৪৫৬৭৮৯".indexOf(c)})}
+function norm(s){return s.toLowerCase().replace(/\s+/g," ").trim()}
+function tday(){return new Date().toISOString().slice(0,10)}
+function sentN(){try{var o=JSON.parse(localStorage.getItem("bt-sent")||"{}");return o.d===tday()?o.n:0}catch(e){return 0}}
+function markSent(){try{localStorage.setItem("bt-sent",JSON.stringify({d:tday(),n:sentN()+1}))}catch(e){}}
+$("gps").onclick=function(){
+$("aerr").textContent="";
+getPos(function(a,b){$("ag").value=a.toFixed(5)+", "+b.toFixed(5)},function(){$("aerr").textContent="অবস্থান পাওয়া যায়নি। লোকেশনের অনুমতি দিন, অথবা সংখ্যা হাতে লিখুন।"});
+};
+function fail(m,id){$("aerr").textContent=m;if(id)$(id).focus();return null}
+$("save").onclick=function(){
+$("aerr").textContent="";$("aout").innerHTML="";
+var n=$("an").value.trim().replace(/\s+/g," "),ad=$("aa").value.trim(),ph=dig($("aph").value).replace(/[\s-]/g,""),ps=$("ap").value.split(/[,،]+/).map(function(x){return x.trim()}).filter(Boolean);
+var g=dig($("ag").value).split(/[,\s]+/).filter(Boolean).map(parseFloat);
+if(sentN()>=5)return fail("আজকের জন্য সর্বোচ্চ ৫টি তথ্য পাঠানো যায়। কাল আবার চেষ্টা করুন।");
+if(n.length<3||!/[\u0980-\u09FFa-zA-Z]/.test(n))return fail("দোকান বা জায়গার সঠিক নাম লিখুন (কমপক্ষে ৩ অক্ষর)।","an");
+if(ad.length<4)return fail("ঠিকানা লিখুন, যাতে অন্যরা জায়গাটা খুঁজে পায়।","aa");
+var all=norm(n+" "+ad+" "+ps.join(" "));
+if(/https?:|www\.|\.com|\.net|@/.test(all))return fail("নাম, ঠিকানা বা জিনিসের তালিকায় লিংক বা ইমেইল দেওয়া যাবে না।","an");
+for(var i=0;i<BAD.length;i++)if(all.indexOf(BAD[i])>=0)return fail("এই লেখাটি গ্রহণ করা যাবে না। শুধু দোকান বা জায়গার সত্যিকারের তথ্য দিন।","an");
+if(ps.length>15||ps.some(function(x){return x.length>30}))return fail("জিনিসের তালিকায় সর্বোচ্চ ১৫টি জিনিস দিন, প্রতিটি ৩০ অক্ষরের মধ্যে।","ap");
+if(ph&&!/^(\+?88)?01[3-9]\d{8}$/.test(ph)&&!/^0\d{7,10}$/.test(ph))return fail("ফোন নম্বর ঠিক নেই। মোবাইল হলে ০১৭১২৩৪৫৬৭৮ এর মতো লিখুন।","aph");
+if(g.length<2||isNaN(g[0])||isNaN(g[1]))return fail("অবস্থান দিন, যেমন: 24.8465, 89.3773","ag");
+if(g[0]<BOX.a||g[0]>BOX.b||g[1]<BOX.c||g[1]>BOX.d)return fail("এই অবস্থান বগুড়া জেলার বাইরে মনে হচ্ছে। সংখ্যা আবার দেখুন।","ag");
+for(var j=0;j<D.length;j++)if(norm(D[j][0])===norm(n)||norm(D[j][1])===norm(n))return fail("“"+D[j][0]+"” আগে থেকেই তালিকায় আছে।","an");
+markSent();
+var t="নতুন জায়গার প্রস্তাব (বগুড়া ঠিকানা)\nনাম: "+n+"\nধরন: "+CAT[$("ac").value]+"\nকী পাওয়া যায়: "+(ps.join(", ")||"—")+"\nঠিকানা: "+ad+"\nফোন: "+(ph||"—")+"\nঅবস্থান: "+g[0]+", "+g[1]+"\nম্যাপ: https://www.google.com/maps/search/?api=1&query="+g[0]+","+g[1];
+var h='<div class="p" style="margin-top:12px"><b>তথ্য ঠিক আছে। এবার অ্যাডমিনকে পাঠান:</b><pre id="atxt" style="white-space:pre-wrap;font:inherit;background:var(--hi);padding:10px;border-radius:8px;margin:8px 0">'+esc(t)+'</pre><div class="acts">';
+if(ADMIN_WA)h+='<a href="https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent(t)+'" target="_blank" rel="noopener">হোয়াটসঅ্যাপে পাঠান</a>';
+h+='<button id="cp" type="button">কপি করুন</button></div><p class="note">অ্যাডমিন যাচাই করে অ্যাপে যোগ করলে সবাই দেখতে পাবে।</p></div>';
+$("aout").innerHTML=h;
+$("cp").onclick=function(){try{navigator.clipboard.writeText(t).then(function(){$("cp").textContent="কপি হয়েছে"},function(){$("cp").textContent="কপি হয়নি, লেখাটা চেপে ধরে কপি করুন"})}catch(e){$("cp").textContent="কপি হয়নি, লেখাটা চেপে ধরে কপি করুন"}};
+};
+chips();render();
+</script>
+</body>
+</html>
